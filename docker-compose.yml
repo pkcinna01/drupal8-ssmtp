@@ -1,0 +1,55 @@
+version: '2'
+
+services:
+  drupal:
+    #image: drupal:8.3.4-apache
+    image: xmonit/drupal8-ssmtp:8.3.5
+    ports:
+      - 8080:80
+    volumes:
+      - ./ssmtp:/etc/ssmtp
+      - /var/backups/drupal:/var/backups/drupal
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles
+      - drupal-themes:/var/www/html/themes
+      - drupal-sites:/var/www/html/sites
+      - drupal-libraries:/var/www/html/libraries
+    links:
+      - mysql
+
+  mysql:
+    #image: mysql:5.7
+    image: mariadb:10.2.6
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal 
+      MYSQL_DATABASE: drupal
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-config:/etc/mysql
+    #command: "mysqld_safe --skip-grant-tables"
+
+volumes:
+  drupal-modules:
+    driver: local
+  drupal-profiles:
+    driver: local
+  drupal-themes:
+    driver: local
+  drupal-sites:
+    driver: local
+  drupal-libraries:
+    driver: local
+  mysql-data:
+    driver: local
+  mysql-config:
+    driver: local
+
+  
+  
+  
+  
+  
+  
