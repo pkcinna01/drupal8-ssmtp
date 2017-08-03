@@ -1,6 +1,3 @@
-# Dockerfile for drupal8 with ssmtp to allow authenticated smtp 
-# https://github.com/xmonit/drupal8-with-ssmtp
-
 FROM drupal:8.3.5-apache
 
 MAINTAINER Paul Cinnamond
@@ -16,16 +13,10 @@ RUN apt-get update \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 
-RUN { \
-    echo '# docker xmonit/drupal8-with-ssmtp requires valid entries in /etc/ssmtp and sendmail path'; \
-    echo 'sendmail_path = "/usr/sbin/sendmail -t -i"'; \
-} >> /usr/local/etc/php/php.ini
+RUN { echo 'sendmail_path = "/usr/sbin/sendmail -t -i"'; } >> /usr/local/etc/php/php.ini
 
 # sudo required for php composer to run as www-data
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# distribution managed rpaf is old
-#RUN apt-get update && apt-get install libapache2-mod-rpaf
 
 # build rpaf from github source
 RUN apt-get update \
