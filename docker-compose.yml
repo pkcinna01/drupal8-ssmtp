@@ -2,8 +2,10 @@ version: '2'
 
 services:
   drupal:
-    #image: drupal:8.3.4-apache
-    image: xmonit/drupal8-ssmtp:8.3.5
+    image: xmonit/drupal8-apache:8.3.5
+    restart: always:5
+    environment:
+      - ENABLE_RPAF_MODULE=true
     ports:
       - 8080:80
     volumes:
@@ -14,22 +16,24 @@ services:
       - drupal-themes:/var/www/html/themes
       - drupal-sites:/var/www/html/sites
       - drupal-libraries:/var/www/html/libraries
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     links:
       - mysql
 
   mysql:
-    #image: mysql:5.7
     image: mariadb:10.2.6
-    restart: on-failure
+    restart: always:5
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: {password-here}
       MYSQL_USER: drupal
-      MYSQL_PASSWORD: drupal 
+      MYSQL_PASSWORD: {password-here}
       MYSQL_DATABASE: drupal
     volumes:
       - mysql-data:/var/lib/mysql
       - mysql-config:/etc/mysql
-    #command: "mysqld_safe --skip-grant-tables"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
 volumes:
   drupal-modules:
