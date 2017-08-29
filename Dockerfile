@@ -1,4 +1,4 @@
-FROM drupal:8.3.5-apache
+FROM drupal:8.3.7-apache
 
 MAINTAINER Paul Cinnamond
 
