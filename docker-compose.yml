@@ -2,12 +2,12 @@ version: '2'
 
 services:
   drupal:
-    image: xmonit/drupal8-apache:8.3.7
+    image: xmonit/drupal8-apache:8.4.0
     restart: always:5
     environment:
       - ENABLE_RPAF_MODULE=true
     ports:
-      - 8080:80
+      - 8090:80
     volumes:
       - ./ssmtp:/etc/ssmtp
       - /var/backups/drupal:/var/backups/drupal
@@ -25,9 +25,9 @@ services:
     image: mariadb:10.2.6
     restart: always:5
     environment:
-      MYSQL_ROOT_PASSWORD: {password-here}
+      MYSQL_ROOT_PASSWORD: {password-here} 
       MYSQL_USER: drupal
-      MYSQL_PASSWORD: {password-here}
+      MYSQL_PASSWORD: {password-here} 
       MYSQL_DATABASE: drupal
     volumes:
       - mysql-data:/var/lib/mysql
