@@ -2,14 +2,14 @@ version: '2'
 
 services:
   drupal:
-    image: xmonit/drupal8-apache:8.4.0
-    restart: always:5
+    image: xmonit/drupal8-apache:8.6.13
+    restart: unless-stopped
     environment:
       - ENABLE_RPAF_MODULE=true
     ports:
-      - 8090:80
+      - 8080:80
     volumes:
-      - ./ssmtp:/etc/ssmtp
+      - ./mounts/ssmtp:/etc/ssmtp
       - /var/backups/drupal:/var/backups/drupal
       - drupal-modules:/var/www/html/modules
       - drupal-profiles:/var/www/html/profiles
@@ -18,16 +18,19 @@ services:
       - drupal-libraries:/var/www/html/libraries
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - ./mounts/sites/default/settings.php:/var/www/html/sites/default/settings.php
+      - ./mounts/themes/xmonit:/var/www/html/themes/xmonit
+    #command: sleep 10000
     links:
       - mysql
 
   mysql:
-    image: mariadb:10.2.6
-    restart: always:5
+    image: mariadb:10.4.3
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: {password-here} 
+      MYSQL_ROOT_PASSWORD: {password-here}
       MYSQL_USER: drupal
-      MYSQL_PASSWORD: {password-here} 
+      MYSQL_PASSWORD: {password-here}
       MYSQL_DATABASE: drupal
     volumes:
       - mysql-data:/var/lib/mysql

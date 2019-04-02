@@ -1,0 +1,35 @@
+# core: 8.x
+type: theme
+base theme: bootstrap
+
+name: 'XMonit'
+description: 'A Drupal 8 theme for XMonit website.'
+package: 'Bootstrap'
+screenshot: 'images/xmonit-logo.png'
+regions:
+  header: 'Header'
+  header_right: 'Header Right'
+  navigation: 'Navigation'
+  navigation_collapsible: 'Navigation (Collapsible)'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  content: 'Content'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  content_bottom1: 'Content Bottom 1'
+  content_bottom2: 'Content Bottom 2'
+  content_bottom3: 'Content Bottom 3'
+  footer: 'Footer'
+  footer1: 'Footer One'
+  footer2: 'Footer Two'
+  footer3: 'Footer Three'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+
+libraries:
+  - 'xmonit/global-styling'
+  - 'xmonit/open-sans'
+  - 'xmonit/global-js'
+
+version: '8.x-1.0'
+core: '8.x'
