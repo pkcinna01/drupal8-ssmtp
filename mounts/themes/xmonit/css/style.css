@@ -354,6 +354,10 @@ img {
   margin-right: 10px;
 }
 
+#block-xmonit-account-menu {
+  padding-right: 15px;
+}
+
 .header-right nav > ul li {
   display: inline-block;
   padding: 0 8px;
@@ -568,7 +572,7 @@ main {
 }
 
 .section-footer {
-  border-top: solid 3px #1782d0;
+  padding-top: 15px;
   overflow: hidden;
 }
 
@@ -585,6 +589,11 @@ main {
 .section-footer ul.nav > li > a:focus,
 .section-footer ul.nav > li > a:active {
   background: #3ba0d8;
+}
+
+.content-bottom .content-bottom-1,
+.content-bottom .content-bottom-3 {
+    font-size: small;
 }
 
 .content-bottom .content-bottom-2 > div {
