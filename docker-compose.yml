@@ -2,7 +2,7 @@ version: '2'
 
 services:
   drupal:
-    image: xmonit/drupal8-apache:8.6.13
+    image: xmonit/drupal8-apache:8.7.2
     restart: unless-stopped
     environment:
       - ENABLE_RPAF_MODULE=true

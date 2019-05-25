@@ -52,15 +52,16 @@ RUN { \
 
 WORKDIR /var/www/html
 
-# https://www.drupal.org/node/3060/release
-ENV DRUPAL_VERSION 8.6.13
-ENV DRUPAL_MD5 ded84151ebda80826f18e924dab03edd
+ENV DRUPAL_VERSION 8.7.2
 
-RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz \
-	&& echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c - \
-	&& tar -xz --strip-components=1 -f drupal.tar.gz \
-	&& rm drupal.tar.gz \
-	&& chown -R www-data:www-data sites modules themes
+RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz 
+
+# Manually grab the MD5 from https//www.drupal.org/project/drupal/releases
+ENV DRUPAL_MD5 f637a19f7d087e9f68e39470fd151a1d 
+ 
+RUN echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c -
+RUN tar -xz --strip-components=1 -f drupal.tar.gz && rm drupal.tar.gz
+RUN chown -R www-data:www-data sites modules themes
 
 # vim:set ft=dockerfile:
 
