@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM arm32v7/php:7.2-apache
 
 # install the PHP extensions we need
 RUN set -ex; \
@@ -52,42 +52,25 @@ RUN { \
 
 WORKDIR /var/www/html
 
-ENV DRUPAL_VERSION 8.7.2
-
-RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz 
-
-# Manually grab the MD5 from https//www.drupal.org/project/drupal/releases
-ENV DRUPAL_MD5 f637a19f7d087e9f68e39470fd151a1d 
- 
-RUN echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c -
-RUN tar -xz --strip-components=1 -f drupal.tar.gz && rm drupal.tar.gz
-RUN chown -R www-data:www-data sites modules themes
-
-# vim:set ft=dockerfile:
-
-#end php-apache image
-
-
 ENV TERM=xterm
 
 RUN apt-get update \
      && apt-get upgrade -y \
-     && apt-get install -y --no-install-recommends \
-          ssmtp \
-          vim \
-          sudo \ 
-     && apt-get clean \
+     && apt-get install -y --no-install-recommends vim sudo 
+#RUN apt-get install -f -y ssmtp
+RUN apt-get install -f -y msmtp msmtp-mta s-nail
+RUN apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 
 RUN { echo 'sendmail_path = "/usr/sbin/sendmail -t -i"'; } >> /usr/local/etc/php/php.ini
 
 # sudo required for php composer to run as www-data
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # build rpaf from github source
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y build-essential apache2-dev unzip git \
+    && apt-get install -y build-essential apache2-dev unzip iproute2\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -102,6 +85,14 @@ RUN apt-get remove -y --purge build-essential apache2-dev unzip
 
 ADD src/startApache.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/startApache.sh
+
+ENV DRUPAL_VERSION 8.7.7
+RUN curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz
+# Manually grab the MD5 from https://www.drupal.org/project/drupal/releases
+ENV DRUPAL_MD5 eda95eb4c6567049c661818ffe800d11
+RUN echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c -
+RUN tar -xz --strip-components=1 -f drupal.tar.gz && rm drupal.tar.gz
+RUN chown -R www-data:www-data sites modules themes
 
 CMD ["/usr/local/bin/startApache.sh"]
 

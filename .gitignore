@@ -1,3 +1,5 @@
 mounts/ssmtp/*
 !mounts/ssmtp/README*
+mounts/msmtp/*
+!mounts/msmtp/README*
 mounts/sites/*
